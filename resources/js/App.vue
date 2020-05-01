@@ -34,6 +34,7 @@
           v-for="link of links"
           :key="link.title"
           :to="link.url"
+          exact
           text
         >
           <v-icon left>{{ link.icon }}</v-icon>
@@ -59,7 +60,9 @@ export default {
     data: () => ({
       drawer: null,
       links: [
-        {title: 'Login', icon: 'mdi-lock', url: '/home'}
+        {title: 'Login', icon: 'mdi-lock', url: {name: 'home'}},
+        {title: 'Home', icon: 'mdi-lock', url: {name: 'general'}},
+        {title: 'User', icon: 'mdi-lock', url: {name: 'users.index'}}
       ]
     }),
 }
