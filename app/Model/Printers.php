@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Printers extends Model
 {
-    protected $table = "web_orgtekhnika ";
+    protected $table = "web_orgtekhnika";
+
+    protected $fillable = [
+        'id', 'inventory_number', 'serial',
+    ];
 
     public function printerName()
     {

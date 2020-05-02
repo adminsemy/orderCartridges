@@ -62,7 +62,8 @@ export default {
       links: [
         {title: 'Login', icon: 'mdi-lock', url: {name: 'home'}},
         {title: 'Home', icon: 'mdi-lock', url: {name: 'general'}},
-        {title: 'User', icon: 'mdi-lock', url: {name: 'users.index'}}
+        {title: 'User', icon: 'mdi-lock', url: {name: 'users.index'}},
+        {title: 'Printers', icon: 'mdi-lock', url: {name: 'printers'}}
       ]
     }),
 }

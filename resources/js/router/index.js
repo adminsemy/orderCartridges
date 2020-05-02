@@ -4,6 +4,7 @@ import Home from '../components/Home'
 import UserIndex from '../components/UserIndex'
 import UserEdit from '../components/UserEdit'
 import NotFound from '../components/NotFound'
+import Printers from '../components/Printers'
 
 Vue.use(Router)
 
@@ -24,6 +25,11 @@ export default new Router({
       path: '/home',
       name: 'home',
       component: Home,
+    },
+    { 
+      path: '/printers',
+      name: 'printers',
+      component: Printers,
     },
     {
       path: '/',
