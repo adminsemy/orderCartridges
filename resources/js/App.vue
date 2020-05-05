@@ -65,6 +65,6 @@ export default {
         {title: 'User', icon: 'mdi-lock', url: {name: 'users.index'}},
         {title: 'Printers', icon: 'mdi-lock', url: {name: 'printers'}}
       ]
-    }),
+    })
 }
 </script>

@@ -14,4 +14,9 @@ class PrintersController extends Controller
         $printer = Printers::query()->with('printerName')->get();
         return PrinterResource::collection($printer);
     }
+
+    public function show(Printers $printer)
+    {
+        return new PrinterResource($printer);
+    }
 }

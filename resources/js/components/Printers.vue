@@ -2,9 +2,13 @@
   <v-data-table
     :headers="headers"
     :items="printers"
-    :items-per-page="10"
+    :items-per-page="25"
     class="elevation-1"
-  ></v-data-table>
+  >
+  <template v-slot:item.actions="{ item }">
+      <router-link :to="{ name: 'order.cartridge', params: { id: item.id } }">Заказать картридж</router-link>
+  </template>
+  </v-data-table>
 </template>
 <script>
 import api from '../api/printers'
@@ -22,6 +26,7 @@ import api from '../api/printers'
           { text: 'Fat (g)', value: 'serialNumber' },
           { text: 'Carbs (g)', value: 'inventoryNumber' },
           { text: 'Protein (g)', value: 'uin' },
+          { text: 'Action', value: 'actions', sortable: false },
         ],
         printers: []
       }

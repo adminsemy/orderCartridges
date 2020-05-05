@@ -5,6 +5,7 @@ import UserIndex from '../components/UserIndex'
 import UserEdit from '../components/UserEdit'
 import NotFound from '../components/NotFound'
 import Printers from '../components/Printers'
+import OrderCartridge from '../components/OrderCartridge'
 
 Vue.use(Router)
 
@@ -30,6 +31,11 @@ export default new Router({
       path: '/printers',
       name: 'printers',
       component: Printers,
+    },
+    { 
+      path: '/printer/:id/order',
+      name: 'order.cartridge',
+      component: OrderCartridge,
     },
     {
       path: '/',
