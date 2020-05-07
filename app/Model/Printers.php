@@ -16,4 +16,14 @@ class Printers extends Model
     {
         return $this->belongsTo('App\Model\PrinterNames', 'id_name');
     }
+
+    public function cartridges()
+    {
+        return $this->hasMany('App\Model\CartridgesOfPrinter', 'id_orgtekhnika', 'id_name');
+    }
+
+    public function historyOrder()
+    {
+        return $this->hasMany('App\Model\HistoryOrder', 'id_tehniki');
+    }
 }
