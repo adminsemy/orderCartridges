@@ -20,7 +20,7 @@ class OrderResource extends JsonResource
             'serialNumber' => $this->serial,
             'inventoryNumber' => $this->inventory_number,
             'uin' => $this->users,
-            'cardridges' => CartridgesOfPrinterResource::collection($this->cartridges),
+            'cartridges' => CartridgesOfPrinterResource::collection($this->cartridges),
             'history' => HistoryOrderResource::collection($this->historyOrder)
         ];
     }
