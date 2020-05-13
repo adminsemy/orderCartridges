@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\PrinterResource;
 use App\Model\Printers;
-use Illuminate\Http\Request;
+use App\Services\OrderService;
 
 class PrintersController extends Controller
 {
@@ -19,5 +19,10 @@ class PrintersController extends Controller
     public function show(Printers $printer)
     {
         return new OrderResource($printer);
+    }
+
+    public function test()
+    {
+        dd(date('Y-m-d H:i:s'));
     }
 }

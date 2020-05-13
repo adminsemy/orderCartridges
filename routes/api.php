@@ -23,4 +23,5 @@ Route::namespace('Api')->group(function() {
     Route::put('/users/{user}', 'UserController@update');
     Route::get('printers', 'PrintersController@index');
     Route::get('/printer/{printer}/order', 'PrintersController@show');
+    Route::put('/printer/{printer_id}/order', 'OrderController@create');
 });
