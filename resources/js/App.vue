@@ -27,8 +27,6 @@
       dark
     >
       <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer" />
-      <v-toolbar-title>app</v-toolbar-title>
-      <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn
           v-for="link of links"
@@ -60,10 +58,10 @@ export default {
     data: () => ({
       drawer: null,
       links: [
-        {title: 'Login', icon: 'mdi-lock', url: {name: 'home'}},
         {title: 'Home', icon: 'mdi-lock', url: {name: 'general'}},
+        {title: 'Printers', icon: 'mdi-lock', url: {name: 'printers'}},
+        {title: 'Login', icon: 'mdi-lock', url: {name: 'home'}},
         {title: 'User', icon: 'mdi-lock', url: {name: 'users.index'}},
-        {title: 'Printers', icon: 'mdi-lock', url: {name: 'printers'}}
       ]
     })
 }

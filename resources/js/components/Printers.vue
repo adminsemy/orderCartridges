@@ -23,9 +23,9 @@ import api from '../api/printers'
             value: 'id',
           },
           { text: 'Name', value: 'name' },
-          { text: 'Fat (g)', value: 'serialNumber' },
-          { text: 'Carbs (g)', value: 'inventoryNumber' },
-          { text: 'Protein (g)', value: 'uin' },
+          { text: 'Serial number', value: 'serialNumber' },
+          { text: 'Invenory number', value: 'inventoryNumber' },
+          { text: 'User ID', value: 'uin' },
           { text: 'Action', value: 'actions', sortable: false },
         ],
         printers: []
