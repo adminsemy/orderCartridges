@@ -6,12 +6,19 @@ import UserEdit from '../components/UserEdit'
 import NotFound from '../components/NotFound'
 import Printers from '../components/Printers'
 import OrderCartridge from '../components/OrderCartridge'
+import Admin from './admin'
 
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
   routes: [
+    ...Admin,
+    { 
+      path: '/printers',
+      name: 'printers',
+      component: Printers,
+    },
     {
       path: '/users',
       name: 'users.index',
@@ -26,11 +33,6 @@ export default new Router({
       path: '/home',
       name: 'home',
       component: Home,
-    },
-    { 
-      path: '/printers',
-      name: 'printers',
-      component: Printers,
     },
     { 
       path: '/printer/:id/order',

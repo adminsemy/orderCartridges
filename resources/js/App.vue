@@ -32,7 +32,7 @@
           v-for="link of links"
           :key="link.title"
           :to="link.url"
-          exact
+          :exact="link.exact"
           text
         >
           <v-icon left>{{ link.icon }}</v-icon>
@@ -58,10 +58,11 @@ export default {
     data: () => ({
       drawer: null,
       links: [
-        {title: 'Home', icon: 'mdi-lock', url: {name: 'general'}},
-        {title: 'Printers', icon: 'mdi-lock', url: {name: 'printers'}},
-        {title: 'Login', icon: 'mdi-lock', url: {name: 'home'}},
-        {title: 'User', icon: 'mdi-lock', url: {name: 'users.index'}},
+        {title: 'Home', icon: 'mdi-home', url: {name: 'general'}, exact: true},
+        {title: 'Printers', icon: 'mdi-printer', url: {name: 'printers'}, exact: true},
+        {title: 'Admin', icon: 'mdi-account-star', url: {name: 'admin'}, exact: false},
+        {title: 'Login', icon: 'mdi-login', url: {name: 'home'}, exact: true},
+        {title: 'User', icon: 'mdi-account', url: {name: 'users.index'}, exact: true},
       ]
     })
 }
