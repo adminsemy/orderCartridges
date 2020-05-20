@@ -90,8 +90,8 @@ class OrderService
     {
         $cartridge = Cartridge::find((int)$historyOrder->id_cartridge);
         if ($cartridge->isNewCartridge()) {
-            $historyOrder->zakaz = 1;
-            $historyOrder->action = 1;
+            $historyOrder->zakaz = HistoryOrder::GIVE_NEW;
+            $historyOrder->action = HistoryOrder::ORDER_COMPLITED;
             $historyOrder->save();
             $cartridge->all = $cartridge->all - 1;
             $cartridge->save();
@@ -105,8 +105,8 @@ class OrderService
 
     private function orderSeasonedCartridge(HistoryOrder $historyOrder): void
     {
-        $historyOrder->zakaz = 2;
-        $historyOrder->action = 1;
+        $historyOrder->zakaz = HistoryOrder::GIVE_SEASONED;
+        $historyOrder->action = HistoryOrder::ORDER_COMPLITED;
         $historyOrder->save();
         $this->statusOrder = true;
         $this->message = 'Seasoned cartridge was sended';        
