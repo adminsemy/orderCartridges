@@ -13,7 +13,7 @@ class CartridgesOfPrinter extends Model
         return $this->hasOne('App\Model\Printers', 'id_orgtekhnika', 'id_name');
     }
 
-    public function cartridgeName()
+    public function cartridge()
     {
         return $this->belongsTo('App\Model\Cartridge', 'id_tovari');
     }

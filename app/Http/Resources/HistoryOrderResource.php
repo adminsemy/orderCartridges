@@ -16,7 +16,7 @@ class HistoryOrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'cartridgeName' => $this->cartridgeName->marka,
+            'cartridgeName' => $this->cartridge->marka,
             'date' => $this->data,
             'action' => $this->action
         ];

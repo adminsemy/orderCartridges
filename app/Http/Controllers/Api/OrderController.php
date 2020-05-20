@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OrderMethodRequest;
+use App\Http\Resources\Admin\OrderResource;
 use App\Model\HistoryOrder;
 use App\Services\OrderService;
 use DomainException;
@@ -16,6 +18,12 @@ class OrderController extends Controller
     {
         $this->orderService = $order;                        
     }
+    
+    public function index()
+    {
+        $orders = HistoryOrder::query()->where('action', 0)->get();
+        return OrderResource::collection($orders);
+    }
 
     public function create($id, Request $request)
     {
@@ -27,6 +35,16 @@ class OrderController extends Controller
             HistoryOrder::insert($this->orderService->structue($id, $cartridges));
             return response()->json(['message' => 'Order completed']);
         } catch (DomainException $e ) {
+            return response($e->getMessage(), $e->getCode());
+        }
+    }
+
+    public function sendCartridge(HistoryOrder $historyOrder, OrderMethodRequest $request)
+    {
+        try {
+            $sendOrder = $this->orderService->orderCartridge($historyOrder, $request->cartridge);
+            return response()->json(['message' => $sendOrder->getMessage()]);
+        } catch (DomainException $e) {
             return response($e->getMessage(), $e->getCode());
         }
     }

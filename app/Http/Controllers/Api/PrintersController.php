@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\PrinterResource;
+use App\Model\Cartridge;
+use App\Model\HistoryOrder;
 use App\Model\Printers;
 use App\Services\OrderService;
 
@@ -23,6 +25,8 @@ class PrintersController extends Controller
 
     public function test()
     {
-        dd(date('Y-m-d H:i:s'));
+        $cart = HistoryOrder::find(1744);
+        $orderservice = new OrderService;
+        dd($orderservice->orderNewCartridge($cart));
     }
 }

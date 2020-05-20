@@ -16,7 +16,7 @@ class CartridgesOfPrinterResource extends JsonResource
     {
         return [
             'id' => $this->id_tovari,
-            'name' => $this->cartridgeName->marka
+            'name' => $this->cartridge->marka
         ];
     }
 }

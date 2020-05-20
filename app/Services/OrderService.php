@@ -2,14 +2,22 @@
 
 namespace App\Services;
 
+use App\Model\Cartridge;
 use App\Model\CartridgesOfPrinter;
 use App\Model\HistoryOrder;
 use App\Model\Printers;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class OrderService
 {
-    /* 
+    private $statusOrder;
+    private $message = '';
+    /**
      * Checks for matching cartridge id printer
+     *
+     * @param  mixed $id_printer
+     * @param  mixed $order_cartridges
+     * @return array
      */
     public function checkCartridges(int $id_printer, array $order_cartridges): array
     {
@@ -26,8 +34,13 @@ class OrderService
         return $result->all();
     }
 
-    /* 
+        
+    /**
      * Strutrure array cartridges after to saving in database
+     *
+     * @param  int $id_printer
+     * @param  array $cartridges
+     * @return array
      */
     public function structue(int $id_printer, array $cartridges): array
     {
@@ -42,5 +55,60 @@ class OrderService
         }
 
         return $structure;
+    }
+        
+    /**
+     * Check for a cartridge and place an order
+     *
+     * @param  HistoryOrder $historyOrder
+     * @return self
+     */
+    public function orderCartridge(HistoryOrder $historyOrder, $cartridge): self
+    {
+        if ($cartridge === HistoryOrder::NEW_CARTRIDGE) {
+            $this->orderNewCartridge($historyOrder);
+        } elseif ($cartridge === HistoryOrder::SEASONED_CARTRIDGE) {
+            $this->orderSeasonedCartridge($historyOrder);
+        } else {
+            $this->statusOrder = false;
+            $this->message = 'Cannot send cartridge';
+        }
+        return $this;
+    }
+
+    public function getStatusOrder()
+    {
+        return $this->statusOrder;
+    }
+
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    private function orderNewCartridge(HistoryOrder $historyOrder): void
+    {
+        $cartridge = Cartridge::find((int)$historyOrder->id_cartridge);
+        if ($cartridge->isNewCartridge()) {
+            $historyOrder->zakaz = 1;
+            $historyOrder->action = 1;
+            $historyOrder->save();
+            $cartridge->all = $cartridge->all - 1;
+            $cartridge->save();
+            $this->statusOrder = true;
+            $this->message = 'New cartridge was sended';
+        } else {
+            $this->statusOrder = false;
+            $this->message = 'Not a new cartidge';
+        }
+    }
+
+    private function orderSeasonedCartridge(HistoryOrder $historyOrder): void
+    {
+        $historyOrder->zakaz = 2;
+        $historyOrder->action = 1;
+        $historyOrder->save();
+        $this->statusOrder = true;
+        $this->message = 'Seasoned cartridge was sended';        
     }
 }
