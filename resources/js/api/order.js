@@ -12,5 +12,8 @@ export default {
     },
     giveCartridge(cartridge_id, cartridge) {
         return axios.post(`/api/admin/send/cartridge/order/${cartridge_id}`, { cartridge: cartridge });
+    },
+    deleteCartridge(cartridge_id) {
+        return axios.delete(`/api/admin/delete/order/${cartridge_id}`);
     }
 };

@@ -48,4 +48,16 @@ class OrderController extends Controller
             return response($e->getMessage(), $e->getCode());
         }
     }
+
+    public function delete($id)
+    {
+        try {
+            $historyOrder = HistoryOrder::find($id);
+            $historyOrder->delete();
+            return response('', 204);
+        } catch (DomainException $e) {
+            return response($e->getMessage(), $e->getCode());
+        }
+
+    }
 }

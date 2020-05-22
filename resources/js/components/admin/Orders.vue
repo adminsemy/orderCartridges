@@ -18,28 +18,28 @@
             :disabled="item.newCartridge === 0 ? true : false"
             class="success"
             :key="item.id"
-            @click="openDialogNew(item.id)"
+            @click="openDialog(newCartridge, item.id)"
         >
         New
         </v-btn>
         <v-btn
             class="info"
             :key="item.id"
-            @click="dialogSeasoned = true"
+            @click="openDialog(seasonedCartridge, item.id)"
         >
         Seasoned
         </v-btn>
         <v-btn
             class="error"
             :key="item.id"
-            @click="dialogDelete = true"
+            @click="openDialog(deleteCartridge, item.id)"
         >
         Delete
         </v-btn>
     </template>
     </v-data-table>
     <v-dialog
-      v-model="dialogNew.status"
+      v-model="dialog.new"
       max-width="290"
     >
       <v-card>
@@ -60,7 +60,7 @@
           <v-btn
             color="cancel"
             text
-            @click="dialogNew.status = false"
+            @click="dialog.new = false"
           >
             No
           </v-btn>
@@ -68,7 +68,7 @@
       </v-card>
     </v-dialog>
     <v-dialog
-      v-model="dialogSeasoned"
+      v-model="dialog.seasoned"
       max-width="290"
     >
       <v-card>
@@ -81,7 +81,7 @@
 
           <v-btn
             color="success"
-            @click="dialogSeasoned = false"
+            @click="giveOutCartridge(seasonedCartridge)"
           >
             Yes
           </v-btn>
@@ -89,7 +89,7 @@
           <v-btn
             color="cancel"
             text
-            @click="dialogSeasoned = false"
+            @click="dialog.seasoned = false"
           >
             No
           </v-btn>
@@ -97,7 +97,7 @@
       </v-card>
     </v-dialog>
     <v-dialog
-      v-model="dialogDelete"
+      v-model="dialog.delete"
       max-width="290"
     >
       <v-card>
@@ -110,7 +110,7 @@
 
           <v-btn
             color="success"
-            @click="dialogDelete = false"
+            @click="deleteThisCartridge()"
           >
             Yes
           </v-btn>
@@ -118,7 +118,7 @@
           <v-btn
             color="cancel"
             text
-            @click="dialogDelete = false"
+            @click="dialog.delete = false"
           >
             No
           </v-btn>
@@ -146,23 +146,34 @@ export default {
           { text: 'Get cartridge', value: 'actions', sortable: false },
         ],
         orders: [],
-        dialogNew: {
-            status: false,
+        dialog: {
+            new: false,
+            seasoned: false,
+            delete: false,
             id: ''
         },
-        dialogSeasoned: false,
-        dialogDelete: false,
         alertSuccess: false,
         alertWarning: false,
         alertText: '',
         newCartridge: 'new',
-        SeasonedCartridge: 'seasoned',
+        seasonedCartridge: 'seasoned',
+        deleteCartridge: 'delete',
       }
     },
     methods: {
-        openDialogNew (id) {
-            this.dialogNew.status = true;
-            this.dialogNew.id = id;
+        openDialog (form, id) {
+            switch(form) {
+              case this.newCartridge:
+                this.dialog.new = true;
+                break;
+              case this.seasonedCartridge:
+                this.dialog.seasoned = true;
+                break;
+              case this.deleteCartridge:
+                this.dialog.delete = true;
+              break;
+            }
+            this.dialog.id = id;
         },
         findOrder () {
             api.findOrder()
@@ -178,10 +189,10 @@ export default {
             this.alertSuccess = false;
             this.alertWarning = false;
 
-            api.giveCartridge(this.dialogNew.id, cartridge)
+            api.giveCartridge(this.dialog.id, cartridge)
             .then((response) => {
                 this.alertText = response.data.message
-                if (this.alertText === 'New cartridge was sended') {
+                if (this.alertText === 'New cartridge was sended' || this.alertText === 'Seasoned cartridge was sended') {
                     this.alertSuccess = true;
                 } else {
                     this.alertWarning = true;
@@ -190,9 +201,26 @@ export default {
             }).catch((error) => {
                 console.log(error)
             })
-            this.dialogNew.status = false;
+            this.dialog.new = false;
+            this.dialog.seasoned = false;
+            this.dialog.delete = false;
             this.dialogNew.id = '';
         },
+        deleteThisCartridge () {
+            this.alertSuccess = false;
+            this.alertWarning = false;
+            api.deleteCartridge(this.dialog.id)
+            .then((response) => {
+              this.findOrder();
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+            this.dialog.new = false;
+            this.dialog.seasoned = false;
+            this.dialog.delete = false;
+            this.dialogNew.id = '';
+        }
     },
     created () {
         this.findOrder();
