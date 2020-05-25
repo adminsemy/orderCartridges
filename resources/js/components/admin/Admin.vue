@@ -2,7 +2,8 @@
   
     <v-row>
         <v-col cols="10">
-                <router-view></router-view>
+                <router-view>
+                </router-view>
         </v-col>
         <v-col cols="2">
             <v-navigation-drawer
@@ -36,8 +37,9 @@ export default {
         item: 0,
         items: [
             { text: 'Orders', icon: 'mdi-basket', url: { 'name': 'admin.orders' } },
-            { text: 'Audience', icon: 'mdi-account', url: '' },
-            { text: 'Conversions', icon: 'mdi-flag', url: '' },
+            { text: 'Printers list', icon: 'mdi-printer-settings', url: { 'name': 'admin.printersList' } },
+            { text: 'Printers brand', icon: 'mdi-rename-box', url: { 'name': 'admin.printersBrand' } },
+            { text: 'Cartridges', icon: 'mdi-artstation', url: { 'name': 'admin.cartridges' } },
         ],
     }),
 }
