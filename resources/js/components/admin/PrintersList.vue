@@ -9,11 +9,13 @@
         <template v-slot:item.actions="{ item }">
             <v-icon
             v-text="'mdi-pencil'"
-            @click="formDialog(item)"
+            color="green"
+            @click="formDialog(item, true)"
             >
             </v-icon>
             <v-icon 
             v-text="'mdi-delete-forever'"
+            color="red"
             @click="dialogDelete = true"
             >
             </v-icon>
@@ -49,28 +51,52 @@
             </v-card>
         </v-dialog>
         <v-dialog
-            v-model="dialogFrom"
-            max-width="290"
+            v-model="dialogForm"
+            max-width="600"
         >
             <v-card>
-                <v-card-title class="headline">Delete printer</v-card-title>
+                <v-card-title>
+                    <span class="headline" v-text="titleForm"></span>
+                </v-card-title>
 
-                <v-card-text>Are you sure that you want to delete this printer?</v-card-text>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-select
+                                v-model="printer.name"
+                                :items="brands"
+                                label="Printers brand"
+                                required
+                                ></v-select>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="4">
+                                <v-text-field label="Serial number" v-model="printer.serialNumber"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="4">
+                                <v-text-field label="Inventory number" v-model="printer.inventoryNumber"></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-text-field label="Inventory number" v-model="printer.uin"></v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
 
                 <v-card-actions>
                 <v-spacer></v-spacer>
 
                 <v-btn
-                    color="error"
-                    @click="dialogDelete = false"
+                    color="success"
+                    @click="dialogForm = false"
                 >
-                    Delete
+                    Save
                 </v-btn>
 
                 <v-btn
                     color="cancel"
                     text
-                    @click="dialogDelete = false"
+                    @click="dialogForm = false"
                 >
                     Cancel
                 </v-btn>
@@ -98,7 +124,8 @@ import api from '../../api/printers'
           { text: 'Action', value: 'actions', sortable: false },
         ],
         printers: [],
-        newPrinter: {
+        titleForm: 'New printer',
+        printer: {
             id: '',
             name: '',
             serialNumber: '',
@@ -106,7 +133,8 @@ import api from '../../api/printers'
             uin: ''
         },
         dialogDelete: false,
-        dialogForm: false
+        dialogForm: false,
+        brands: []
       }
     },
     computed: {
@@ -121,13 +149,23 @@ import api from '../../api/printers'
         }
     },
     methods: {
-        formDialog(item) {
-            this.newPrinter = item;
-            console.log(this.newPrinter);
-        }
+        formDialog(item, editPrinter = false) {
+            if (editPrinter) {
+                this.titleForm = 'Edit this printer';
+            }
+            this.dialogForm = true;
+            this.printer = item;
+        },
     },
     created() {
         this.showAll;
+        api.brands()
+        .then((response) => {
+            this.brands = response.data.data.sort();
+        })
+        .catch ((error) => {
+            console.log(error);
+        });
     }
   }
 </script>

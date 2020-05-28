@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\PrinterNameResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\PrinterResource;
 use App\Model\Cartridge;
 use App\Model\HistoryOrder;
+use App\Model\PrinterNames;
 use App\Model\Printers;
 use App\Services\OrderService;
 
@@ -21,6 +23,11 @@ class PrintersController extends Controller
     public function show(Printers $printer)
     {
         return new OrderResource($printer);
+    }
+
+    public function brands()
+    {
+        return PrinterNameResource::collection(PrinterNames::all());
     }
 
     public function test()
