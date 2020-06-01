@@ -1,5 +1,15 @@
 <template>
     <div>
+        <v-row>
+            <v-col>
+                <v-btn 
+                color="primary"
+                @click="formNewDialog()"
+                >
+                    New Printer
+                </v-btn>
+            </v-col>
+        </v-row>
         <v-data-table
             :headers="headers"
             :items="printers"
@@ -10,13 +20,13 @@
             <v-icon
             v-text="'mdi-pencil'"
             color="green"
-            @click="formDialog(item, true)"
+            @click="formEditDialog(item)"
             >
             </v-icon>
             <v-icon 
             v-text="'mdi-delete-forever'"
             color="red"
-            @click="dialogDelete = true"
+            @click="formDeleteDialog(item)"
             >
             </v-icon>
         </template>
@@ -35,7 +45,7 @@
 
                 <v-btn
                     color="error"
-                    @click="dialogDelete = false"
+                    @click="deletePrinter()"
                 >
                     Delete
                 </v-btn>
@@ -66,18 +76,29 @@
                                 <v-select
                                 v-model="printer.name"
                                 :items="brands"
+                                filter
                                 label="Printers brand"
                                 required
                                 ></v-select>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
-                                <v-text-field label="Serial number" v-model="printer.serialNumber"></v-text-field>
+                                <v-text-field
+                                label="Serial number"
+                                v-model="printer.serialNumber"
+                            ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
-                                <v-text-field label="Inventory number" v-model="printer.inventoryNumber"></v-text-field>
+                                <v-text-field
+                                label="Inventory number"
+                                v-model="printer.inventoryNumber"
+                            ></v-text-field>
                             </v-col>
                             <v-col cols="12">
-                                <v-text-field label="Inventory number" v-model="printer.uin"></v-text-field>
+                                <v-text-field
+                                label="UIN"
+                                v-model="printer.uin"
+                                required
+                            ></v-text-field>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -88,7 +109,7 @@
 
                 <v-btn
                     color="success"
-                    @click="dialogForm = false"
+                    @click="savePrinter()"
                 >
                     Save
                 </v-btn>
@@ -137,7 +158,7 @@ import api from '../../api/printers'
         brands: []
       }
     },
-    computed: {
+    methods: {
         showAll() {
         api.all()
         .then((response) => {
@@ -146,19 +167,65 @@ import api from '../../api/printers'
         .catch ((error) => {
             console.log(error);
         }); 
+        },
+        formEditDialog(item) {
+            this.titleForm = 'Edit this printer';
+            this.printer = item;
+            this.dialogForm = true;
+        },
+        formDeleteDialog(item) {
+            this.printer = item;
+            this.dialogDelete = true;
+        },
+        formNewDialog() {
+            this.titleForm = 'New printer';
+            this.printer = {
+                id: '',
+                name: '',
+                serialNumber: '',
+                inventoryNumber: '',
+                uin: ''
+            };
+            this.dialogForm = true;
+        },
+        addNewPrinter() {
+            api.new(this.printer)
+            .then((response) => {
+                this.showAll();
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+        },
+        editPrinter() {
+            api.edit(this.printer.id, this.printer)
+            .then((response) => {
+                this.showAll()
+            }).catch((error) => {
+                console.log(error)
+            })
+        },
+        deletePrinter() {
+            api.delete(this.printer.id)
+            .then((response) => {
+                this.showAll()
+            })
+            .catch((error) => {
+                console.log
+            })
+            this.dialogDelete = false;
+        },
+        savePrinter() {
+            if (this.printer.id === '') {
+                this.addNewPrinter();
+            } else {
+                this.editPrinter();
+            }
+            this.dialogForm = false;
         }
     },
-    methods: {
-        formDialog(item, editPrinter = false) {
-            if (editPrinter) {
-                this.titleForm = 'Edit this printer';
-            }
-            this.dialogForm = true;
-            this.printer = item;
-        },
-    },
     created() {
-        this.showAll;
+        this.showAll();
         api.brands()
         .then((response) => {
             this.brands = response.data.data.sort();

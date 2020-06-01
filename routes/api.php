@@ -28,4 +28,7 @@ Route::namespace('Api')->group(function() {
     Route::get('/admin/order', 'OrderController@index');
     Route::post('/admin/send/cartridge/order/{historyOrder}', 'OrderController@sendCartridge');
     Route::delete('/admin/delete/order/{id}', 'OrderController@delete');
+    Route::put('/admin/printer/new', 'PrintersController@store');
+    Route::post('/admin/create/printer/{printer}', 'PrintersController@update');
+    Route::delete('/admin/delete/printer/{printer}', 'PrintersController@delete');
 });
