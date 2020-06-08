@@ -1,6 +1,6 @@
 import Admin from '../components/admin/Admin'
 import Orders from '../components/admin/Orders'
-import PrintersBrand from '../components/admin/PrintersBrand'
+import PrintersBrand from '../components/admin/Brands'
 import PrintersList from '../components/admin/PrintersList'
 import Cartridges from '../components/admin/Cartridges'
 
@@ -21,7 +21,7 @@ export default [
                 component: PrintersList
             },
             {
-                path: 'printers_brand',
+                path: 'brands',
                 name: 'admin.printersBrand',
                 component: PrintersBrand
             },

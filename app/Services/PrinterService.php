@@ -23,7 +23,7 @@ class PrinterService
         } else {
             try {
                 $newPrinter = new Printers();
-                $newPrinter->id_name = $printer->id;
+                $newPrinter->id_name = $brand->id;
                 $newPrinter->serial = $request->serialNumber;
                 $newPrinter->inventory_number = $request->inventoryNumber;
                 $newPrinter->users = $request->uin;

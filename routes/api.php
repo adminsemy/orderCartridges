@@ -21,7 +21,6 @@ Route::namespace('Api')->group(function() {
     Route::get('users', 'UserController@index');
     Route::get('users/{user}', 'UserController@show');
     Route::put('/users/{user}', 'UserController@update');
-    Route::get('/printer_brands', 'PrintersController@brands');
     Route::get('printers', 'PrintersController@index');
     Route::get('/printer/{printer}/order', 'PrintersController@show');
     Route::put('/printer/{printer_id}/order', 'OrderController@create');
@@ -31,4 +30,6 @@ Route::namespace('Api')->group(function() {
     Route::put('/admin/printer/new', 'PrintersController@store');
     Route::post('/admin/create/printer/{printer}', 'PrintersController@update');
     Route::delete('/admin/delete/printer/{printer}', 'PrintersController@delete');
+    Route::get('admin/brands/name', 'BrandsController@brands');
+    Route::get('admin/brands', 'BrandsController@index');
 });

@@ -128,6 +128,7 @@
 </template>
 <script>
 import api from '../../api/printers'
+import apiBrands from '../../api/brands'
   export default {
     data () {
       return {
@@ -226,7 +227,7 @@ import api from '../../api/printers'
     },
     created() {
         this.showAll();
-        api.brands()
+        apiBrands.name()
         .then((response) => {
             this.brands = response.data.data.sort();
         })
