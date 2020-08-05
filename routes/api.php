@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\BrandsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,9 @@ Route::namespace('Api')->group(function() {
     Route::put('/admin/printer/new', 'PrintersController@store');
     Route::post('/admin/create/printer/{printer}', 'PrintersController@update');
     Route::delete('/admin/delete/printer/{printer}', 'PrintersController@delete');
-    Route::get('admin/brands/name', 'BrandsController@brands');
-    Route::get('admin/brands', 'BrandsController@index');
+    Route::get('admin/brands/name', [BrandsController::class, 'brands']);
+    Route::get('admin/brands', [BrandsController::class, 'index']);
+    Route::post('/admin/brand/new', [BrandsController::class, 'store']);
+    Route::put('/admin/brand/{brand}/edit', [BrandsController::class, 'edit']);
+    Route::delete('/admin/brand/{brand}/delete', [BrandsController::class, 'delete']);
 });
