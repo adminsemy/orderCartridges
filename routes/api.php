@@ -34,6 +34,6 @@ Route::namespace('Api')->group(function() {
     Route::get('admin/brands/name', [BrandsController::class, 'brands']);
     Route::get('admin/brands', [BrandsController::class, 'index']);
     Route::post('/admin/brand/new', [BrandsController::class, 'store']);
-    Route::put('/admin/brand/{brand}/edit', [BrandsController::class, 'edit']);
+    Route::put('/admin/brand/{brand}/edit', [BrandsController::class, 'update']);
     Route::delete('/admin/brand/{brand}/delete', [BrandsController::class, 'delete']);
 });
