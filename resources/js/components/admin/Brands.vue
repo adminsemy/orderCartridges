@@ -74,13 +74,11 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12">
-                                <v-select
+                                <v-text-field
                                 v-model="brand.name"
-                                :items="brands"
-                                filter
-                                label="Brands brand"
+                                label="Brands name"
                                 required
-                                ></v-select>
+                                ></v-text-field>
                             </v-col>
                         </v-row>
                     </v-container>
