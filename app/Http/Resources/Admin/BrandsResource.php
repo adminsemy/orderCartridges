@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Admin;
 
+use App\Http\Resources\CartridgesOfPrinterResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BrandsResource extends JsonResource
@@ -16,7 +17,8 @@ class BrandsResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name
+            'name' => $this->name,
+            'cartridge' => CartridgesOfPrinterResource::collection($this->cartridgesOfPrinter)
         ];
     }
 }

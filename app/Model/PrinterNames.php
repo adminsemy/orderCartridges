@@ -8,13 +8,17 @@ class PrinterNames extends Model
 {
     protected $table = 'web_orgtekhnika_name';
 
+    protected $fillable = [
+        'id', 'name'
+    ];
+
     public function printer(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-    return $this->hasOne('App\Model\Printers', 'id_name');
+        return $this->hasOne('App\Model\Printers', 'id_name');
     }
 
-    public function cartridgesOfPrinter(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function cartridgesOfPrinter()
     {
-        return $this->belongsTo('App\Model\CartridgesOfPrinter', 'id_orgtekhnika');
+        return $this->hasMany('App\Model\CartridgesOfPrinter', 'id_orgtekhnika');
     }
 }

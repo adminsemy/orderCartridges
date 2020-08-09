@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\PrinterResource;
+use App\Model\PrinterNames;
 use App\Model\Printers;
 use App\Services\PrinterService;
 use DomainException;
@@ -29,7 +30,7 @@ class PrintersController extends Controller
     {
         return new OrderResource($printer);
     }
-    
+
     public function store(Request $request)
     {
         $newPrinter = $this->printerService->newPrinter($request);
@@ -39,7 +40,7 @@ class PrintersController extends Controller
             return response()->json(['message' => 'Printer is not added']);
         }
     }
-    
+
     public function update(Printers $printer, Request $request)
     {
         $currentPrinter = $this->printerService->editPrinter($printer, $request);
@@ -49,6 +50,7 @@ class PrintersController extends Controller
             return response()->json(['message' => 'Printer is not edited']);
         }
     }
+    
     public function delete(Printers $printer)
     {
         try {
@@ -61,6 +63,7 @@ class PrintersController extends Controller
 
     public function test()
     {
-        
+        $new = PrinterNames::with('cartridgesOfPrinter')->get();
+        dd($new[1]->cartridgesOfPrinter);
     }
 }
