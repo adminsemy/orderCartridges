@@ -12,6 +12,14 @@
       :sort-by="'name'"
       class="elevation-1"
     >
+      <template v-slot:item.cartridges="{ item }">
+        <p class="px-3 pt-3" v-if="item.cartridge.length === 0">No data on cartridges</p>
+        <ul class="py-3" v-if="item.cartridge.length !== 0"> 
+          <li v-for="cartridge in item.cartridge">
+          {{ cartridge.name }}
+          </li>
+        </ul>
+      </template>
       <template v-slot:item.actions="{ item }">
         <v-icon v-text="'mdi-pencil'" color="green" @click="formEditDialog(item)"></v-icon>
         <v-icon v-text="'mdi-delete-forever'" color="red" @click="formDeleteDialog(item)"></v-icon>
@@ -71,6 +79,7 @@ export default {
           value: "id",
         },
         { text: "Name", value: "name" },
+        { text: "Cartidges", value: "cartridges", sortable: false },
         { text: "Actions", value: "actions" },
       ],
       brands: [],

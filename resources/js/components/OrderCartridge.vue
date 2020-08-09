@@ -8,7 +8,7 @@
         </v-alert>
         <v-list-item three-line>
             <v-list-item-content>
-                <v-list-item-title class="headline mb-1" v-text="printer.name"></v-list-item-title>
+                <v-list-item-title class="headline" v-text="printer.name"></v-list-item-title>
                 <v-list-item-subtitle v-text="printer.uin"></v-list-item-subtitle>
                 <v-list-item-subtitle v-text="printer.serialNumber"></v-list-item-subtitle>
                 <v-list-item-subtitle v-text="printer.inventoryNumber"></v-list-item-subtitle>

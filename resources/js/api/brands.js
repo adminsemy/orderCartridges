@@ -8,12 +8,12 @@ export default {
         return axios.get('/api/admin/brands/name');
     },
     new(data) {
-        return axios.put('/api/admin/brands/new', data);
+        return axios.post('/api/admin/brand/new', data);
     },
     edit(id, data) {
-        return axios.post(`/api/admin/create/brands/${id}`, data);
+        return axios.put(`/api/admin/brand/${id}/edit`, data);
     },
     delete(id) {
-        return axios.delete(`/api/admin/delete/brands/${id}`);
+        return axios.delete(`/api/admin/brand/${id}/delete`);
     }
 };
