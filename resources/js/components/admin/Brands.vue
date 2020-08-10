@@ -1,10 +1,12 @@
 <template>
   <div>
+    <!-- Button for modal form 'dialogForm' -->
     <v-row>
       <v-col>
         <v-btn color="primary" @click="formNewDialog()">New Brand</v-btn>
       </v-col>
     </v-row>
+    <!-- Table brands -->
     <v-data-table
       :headers="headers"
       :items="brands"
@@ -12,19 +14,22 @@
       :sort-by="'name'"
       class="elevation-1"
     >
+    <!-- Column 'cartridge' -->
       <template v-slot:item.cartridges="{ item }">
-        <p class="px-3 pt-3" v-if="item.cartridge.length === 0">No data on cartridges</p>
-        <ul class="py-3" v-if="item.cartridge.length !== 0"> 
-          <li v-for="cartridge in item.cartridge">
+        <p class="px-3 pt-3" v-if="item.cartridges.length === 0">No data on cartridges</p>
+        <ul class="py-3" v-if="item.cartridges.length !== 0"> 
+          <li v-for="cartridge in item.cartridges" :key="cartridge.id">
           {{ cartridge.name }}
           </li>
         </ul>
       </template>
+      <!-- Column action with action icons -->
       <template v-slot:item.actions="{ item }">
         <v-icon v-text="'mdi-pencil'" color="green" @click="formEditDialog(item)"></v-icon>
         <v-icon v-text="'mdi-delete-forever'" color="red" @click="formDeleteDialog(item)"></v-icon>
       </template>
     </v-data-table>
+    <!-- Modal form for delete selected brand -->
     <v-dialog v-model="dialogDelete" max-width="290">
       <v-card>
         <v-card-title class="headline">Delete brand</v-card-title>
@@ -40,6 +45,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <!-- Modal form for new brand and edit brand with cartridges -->
     <v-dialog v-model="dialogForm" max-width="600">
       <v-card>
         <v-card-title>
@@ -51,6 +57,30 @@
             <v-row>
               <v-col cols="12">
                 <v-text-field v-model="brand.name" label="Brands name" required></v-text-field>
+              </v-col>
+            </v-row>
+            <!-- View cartridges for selected brand if it's not new brand -->
+            <v-row v-if="brand.id !== ''">
+              <v-col cols="12">
+                <v-divider class="mx-3"></v-divider>
+                <v-list-item-group color="primary">
+                  <v-list-item 
+                    v-for="cartridge in brand.cartridges"
+                    :key="cartridge.id"
+                    @click=""
+                  >
+                    <v-list-item-content>
+                      <v-list-item-title v-text="cartridge.name"></v-list-item-title>
+                    </v-list-item-content>
+
+                    <v-list-item-action>
+                      <v-btn icon @click="deleteCartridge()">
+                        <v-icon color="red">mdi-delete-circle</v-icon>
+                      </v-btn>
+                    </v-list-item-action>
+                  </v-list-item>
+                </v-list-item-group>
+                </ul>
               </v-col>
             </v-row>
           </v-container>
@@ -69,6 +99,7 @@
 </template>
 <script>
 import api from "../../api/brands";
+import apiCartridges from "../../api/cartridges";
 export default {
   data() {
     return {
@@ -80,13 +111,16 @@ export default {
         },
         { text: "Name", value: "name" },
         { text: "Cartidges", value: "cartridges", sortable: false },
-        { text: "Actions", value: "actions" },
+        { text: "Actions", value: "actions", sortable: false},
       ],
       brands: [],
       titleForm: "New brand",
+      nameCartridges: [],
+      Pcartridges: [],
       brand: {
         id: "",
         name: "",
+        cartridges: []
       },
       dialogDelete: false,
       dialogForm: false,
@@ -158,6 +192,9 @@ export default {
         this.editBrand();
       }
       this.dialogForm = false;
+    },
+    deleteCartridge() {
+      console.log(111);
     },
   },
   created() {
