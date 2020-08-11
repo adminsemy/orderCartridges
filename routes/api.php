@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\BrandsController;
+use App\Http\Controllers\Api\CartridgesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,4 +37,9 @@ Route::namespace('Api')->group(function() {
     Route::post('/admin/brand/new', [BrandsController::class, 'store']);
     Route::put('/admin/brand/{brand}/edit', [BrandsController::class, 'update']);
     Route::delete('/admin/brand/{brand}/delete', [BrandsController::class, 'delete']);
+    Route::get('/admin/cartridges/name', [CartridgesController::class, 'cartridgeName']);
+    Route::get('/admin/cartridges', [CartridgesController::class, 'index']);
+    Route::post('/admin/cartridges/new', [CartridgesController::class, 'store']);
+    Route::put('/admin/cartridges/{cartridge}/edit', [CartridgesController::class, 'update']);
+    Route::delete('/admin/cartridges/{cartridge}/delete', [CartridgesController::class, 'delete']);
 });
