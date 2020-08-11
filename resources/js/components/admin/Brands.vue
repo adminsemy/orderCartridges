@@ -14,13 +14,11 @@
       :sort-by="'name'"
       class="elevation-1"
     >
-    <!-- Column 'cartridge' -->
+      <!-- Column 'cartridge' -->
       <template v-slot:item.cartridges="{ item }">
         <p class="px-3 pt-3" v-if="item.cartridges.length === 0">No data on cartridges</p>
-        <ul class="py-3" v-if="item.cartridges.length !== 0"> 
-          <li v-for="cartridge in item.cartridges" :key="cartridge.id">
-          {{ cartridge.name }}
-          </li>
+        <ul class="py-3" v-if="item.cartridges.length !== 0">
+          <li v-for="cartridge in item.cartridges" :key="cartridge.id">{{ cartridge.name }}</li>
         </ul>
       </template>
       <!-- Column action with action icons -->
@@ -60,29 +58,43 @@
               </v-col>
             </v-row>
             <!-- View cartridges for selected brand if it's not new brand -->
-            <v-row v-if="brand.id !== ''">
-              <v-col cols="12">
-                <v-divider class="mx-3"></v-divider>
-                <v-list-item-group color="primary">
-                  <v-list-item 
-                    v-for="cartridge in brand.cartridges"
-                    :key="cartridge.id"
-                    @click=""
-                  >
-                    <v-list-item-content>
-                      <v-list-item-title v-text="cartridge.name"></v-list-item-title>
-                    </v-list-item-content>
+            <div v-if="brand.id !== ''">
+              <v-row>
+                <v-col cols="10">
+                  <v-divider class="mx-3"></v-divider>
+                  <v-select
+                    v-model="selectCartridge"
+                    :items="nameCartridges"
+                    label="Select cartridge"
+                    id="id"
+                    item-text="name"
+                    return-object="true"
+                  ></v-select>
+                </v-col>
+                <v-col cols="2">
+                  <v-btn icon @click="addCartridge()" class="ml-4 mt-3">
+                    <v-icon color="green">mdi-plus-circle</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <v-list-item-group color="primary">
+                    <v-list-item v-for="cartridge in brand.cartridges" :key="cartridge.id" @click>
+                      <v-list-item-content>
+                        <v-list-item-title v-text="cartridge.name"></v-list-item-title>
+                      </v-list-item-content>
 
-                    <v-list-item-action>
-                      <v-btn icon @click="deleteCartridge()">
-                        <v-icon color="red">mdi-delete-circle</v-icon>
-                      </v-btn>
-                    </v-list-item-action>
-                  </v-list-item>
-                </v-list-item-group>
-                </ul>
-              </v-col>
-            </v-row>
+                      <v-list-item-action>
+                        <v-btn icon @click="deleteCartridge()">
+                          <v-icon color="red">mdi-delete-circle</v-icon>
+                        </v-btn>
+                      </v-list-item-action>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-col>
+              </v-row>
+            </div>
           </v-container>
         </v-card-text>
 
@@ -111,22 +123,34 @@ export default {
         },
         { text: "Name", value: "name" },
         { text: "Cartidges", value: "cartridges", sortable: false },
-        { text: "Actions", value: "actions", sortable: false},
+        { text: "Actions", value: "actions", sortable: false },
       ],
       brands: [],
       titleForm: "New brand",
       nameCartridges: [],
-      Pcartridges: [],
+      selectCartridge: '',
       brand: {
         id: "",
         name: "",
-        cartridges: []
+        cartridges: [],
       },
       dialogDelete: false,
       dialogForm: false,
     };
   },
   methods: {
+    /* Recieve 'id' and 'name' by cartridges. Address '/api//admin/brands/name' */
+    selectCartridges() {
+      apiCartridges
+        .name()
+        .then((response) => {
+          this.nameCartridges = response.data.data;
+          console.log(this.nameCartridges);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     showAll() {
       api
         .all()
@@ -139,8 +163,9 @@ export default {
     },
     formEditDialog(item) {
       this.titleForm = "Edit this brand";
-      this.brand = item;
+      this.brand = JSON.parse(JSON.stringify(item));
       this.dialogForm = true;
+      this.selectCartridges();
     },
     formDeleteDialog(item) {
       this.brand = item;
@@ -195,6 +220,14 @@ export default {
     },
     deleteCartridge() {
       console.log(111);
+    },
+    addCartridge() {
+      const findId = this.brand.cartridges.filter(
+        (element) => element.id === this.selectCartridge.id
+      );
+      if (findId.length === 0 && this.selectCartridge !== '') {
+        this.brand.cartridges.push(this.selectCartridge);
+      }
     },
   },
   created() {
