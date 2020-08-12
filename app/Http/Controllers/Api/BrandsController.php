@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\BrandsResource;
 use App\Http\Resources\Admin\PrinterNameResource;
 use App\Model\PrinterNames;
+use App\Services\BrandCartridgesService;
 use DomainException;
-use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
@@ -31,7 +31,7 @@ class BrandsController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        $brands = PrinterNames::with(['cartridgesOfPrinter' => function ($query){
+        $brands = PrinterNames::with(['cartridgesOfPrinter' => function ($query) {
             $query->with('cartridge');
         }])->get();
         return BrandsResource::collection($brands);
@@ -41,6 +41,15 @@ class BrandsController extends Controller
     {
         $newBrand = PrinterNames::create(['name' => $request->name]);
         if ($newBrand) {
+            return response()->json(['message' => 'Brand added']);
+        } else {
+            return response()->json(['message' => 'Brand is not added']);
+        }
+    }
+
+    public function update(PrinterNames $brand, Request $request)
+    {
+        if (BrandCartridgesService::save($brand, $request)) {
             return response()->json(['message' => 'Brand added']);
         } else {
             return response()->json(['message' => 'Brand is not added']);

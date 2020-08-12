@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Admin;
+namespace App\Http\Resources;
 
-use App\Http\Resources\CartridgesOfPrinterResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BrandsResource extends JsonResource
+class CartrigeNameResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,8 +16,7 @@ class BrandsResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'cartridges' => CartridgesOfPrinterResource::collection($this->cartridgesOfPrinter)
+            'name' => $this->marka,
         ];
     }
 }
