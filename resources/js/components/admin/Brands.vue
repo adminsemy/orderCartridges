@@ -80,13 +80,13 @@
               <v-row>
                 <v-col cols="12">
                   <v-list-item-group color="primary">
-                    <v-list-item v-for="cartridge in brand.cartridges" :key="cartridge.id" @click>
+                    <v-list-item v-for="(cartridge, index) in brand.cartridges" :key="cartridge.id" v-on="prevent">
                       <v-list-item-content>
                         <v-list-item-title v-text="cartridge.name"></v-list-item-title>
                       </v-list-item-content>
 
                       <v-list-item-action>
-                        <v-btn icon @click="deleteCartridge()">
+                        <v-btn icon @click="deleteCartridge(index)">
                           <v-icon color="red">mdi-delete-circle</v-icon>
                         </v-btn>
                       </v-list-item-action>
@@ -139,7 +139,7 @@ export default {
     };
   },
   methods: {
-    /* Recieve 'id' and 'name' by cartridges. Address '/api//admin/brands/name' */
+    /* Recieve 'id' and 'name' by cartridges. Address '/api/admin/cartridges' */
     selectCartridges() {
       apiCartridges
         .name()
@@ -151,6 +151,7 @@ export default {
           console.log(error);
         });
     },
+    /*  Ask for brand data. Address '/api/admin/brands' */
     showAll() {
       api
         .all()
@@ -161,16 +162,21 @@ export default {
           console.log(error);
         });
     },
+    /* Sets property 'brand' to the selected item from the brands and activity form */
     formEditDialog(item) {
       this.titleForm = "Edit this brand";
       this.brand = JSON.parse(JSON.stringify(item));
       this.dialogForm = true;
       this.selectCartridges();
     },
+    /* Sets property 'brand' to the selected item from the brands
+    * and activity form delete
+    */
     formDeleteDialog(item) {
       this.brand = item;
       this.dialogDelete = true;
     },
+    /* Sets property 'brand' to empty and activity form */
     formNewDialog() {
       this.titleForm = "New brand";
       this.brand = {
@@ -179,6 +185,9 @@ export default {
       };
       this.dialogForm = true;
     },
+    /* Sends to request to the server to create a new brand. 
+     * Address '/api/admin/brands/new'
+     */
     addNewBrand() {
       api
         .new(this.brand)
@@ -189,6 +198,9 @@ export default {
           console.log(error);
         });
     },
+    /* Sends to request to the server to edit current brand. 
+     * Address '/api/admin/brands/$id/edit'
+     */
     editBrand() {
       api
         .edit(this.brand.id, this.brand)
@@ -199,6 +211,9 @@ export default {
           console.log(error);
         });
     },
+    /* Sends to request to the server to delete current brand. 
+     * Address '/api/admin/brands/$id/delete'
+     */
     deleteBrand() {
       api
         .delete(this.brand.id)
@@ -210,6 +225,7 @@ export default {
         });
       this.dialogDelete = false;
     },
+    /* Edit or create new brand on server */
     saveBrand() {
       if (this.brand.id === "") {
         this.addNewBrand();
@@ -218,9 +234,13 @@ export default {
       }
       this.dialogForm = false;
     },
-    deleteCartridge() {
-      console.log(111);
+    /* Removes cartridge from property 'brand' by index of array  */
+    deleteCartridge(index) {
+      this.brand.cartridges.splice(index,1);
     },
+    /* Adds array of cartridge in property brand' if id does't exist in the array
+    * and if array of cartridge isn't empty
+    */
     addCartridge() {
       const findId = this.brand.cartridges.filter(
         (element) => element.id === this.selectCartridge.id
