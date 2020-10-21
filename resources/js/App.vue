@@ -36,14 +36,14 @@
           text
         >
           <v-icon left>{{ link.icon }}</v-icon>
-          {{ link.title }}
+          {{ $t(link.title) }}
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
-    <v-content>
+    <v-main>
       <router-view></router-view>
-    </v-content>
+    </v-main>
     <v-footer
       color="warning"
       app
