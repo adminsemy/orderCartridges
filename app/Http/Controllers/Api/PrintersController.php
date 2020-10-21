@@ -63,7 +63,11 @@ class PrintersController extends Controller
 
     public function test()
     {
-        $new = PrinterNames::with('cartridgesOfPrinter')->get();
-        dd($new[1]->cartridgesOfPrinter);
+        $collection = collect([1, 2, 3]);
+
+        $intersect = $collection->intersect([]);
+        
+        $intersect->all();
+        dd(array_unique($idCartridges));
     }
 }

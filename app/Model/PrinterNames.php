@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class PrinterNames extends Model
 {
-    protected $table = 'web_orgtekhnika_name';
+    protected $table = 'web_brands';
 
     protected $fillable = [
         'id', 'name'
     ];
-
-    public function printer(): \Illuminate\Database\Eloquent\Relations\HasOne
+    
+    public function printer()
     {
-        return $this->hasOne('App\Model\Printers', 'id_name');
+        return $this->hasMany('App\Model\Printers', 'id_name');
     }
 
     public function cartridgesOfPrinter()

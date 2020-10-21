@@ -16,7 +16,7 @@ class PrinterResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->printerName->name,
+            'name' => $this->printerName['name'],
             'serialNumber' => $this->serial,
             'inventoryNumber' => $this->inventory_number,
             'uin' => $this->users,
