@@ -7,10 +7,10 @@
         </v-col>
         <v-col cols="2">
             <v-navigation-drawer
-                mobile-break-point="0"
+                mobile-breakpoint="0"
             >
             <v-list>
-            <v-subheader>ACTIONS</v-subheader>
+            <v-subheader>{{ $t('General.ACTIONS') }}</v-subheader>
             <v-list-item-group v-model="item" color="primary">
                 <v-list-item
                 v-for="(item, i) in items"
@@ -21,7 +21,7 @@
                     <v-icon v-text="item.icon"></v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
-                    <v-list-item-title v-text="item.text" ></v-list-item-title>
+                    <v-list-item-title v-text="$t(item.text)" ></v-list-item-title>
                 </v-list-item-content>
                 </v-list-item>
             </v-list-item-group>
@@ -36,10 +36,10 @@ export default {
     data: () => ({
         item: 0,
         items: [
-            { text: 'Orders', icon: 'mdi-basket', url: { 'name': 'admin.orders' } },
-            { text: 'Printers list', icon: 'mdi-printer-settings', url: { 'name': 'admin.printersList' } },
-            { text: 'Printers brand', icon: 'mdi-rename-box', url: { 'name': 'admin.printersBrand' } },
-            { text: 'Cartridges', icon: 'mdi-artstation', url: { 'name': 'admin.cartridges' } },
+            { text: 'General.Orders', icon: 'mdi-basket', url: { 'name': 'admin.orders' } },
+            { text: 'General.Printers_list', icon: 'mdi-printer-settings', url: { 'name': 'admin.printersList' } },
+            { text: 'General.Printers_brand', icon: 'mdi-rename-box', url: { 'name': 'admin.printersBrand' } },
+            { text: 'General.Cartridges', icon: 'mdi-artstation', url: { 'name': 'admin.cartridges' } },
         ],
     }),
 }

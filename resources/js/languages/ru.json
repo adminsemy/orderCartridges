@@ -1,7 +1,35 @@
 {
-    "Home": "Домой",
-    "Printers": "Принетры",
-    "Admin": "Админ",
-    "Login": "Вход",
-    "User": "Пользователи"
+    "General": {
+        "Home": "Домой",
+        "Printers": "Принетры",
+        "Admin": "Админ",
+        "Login": "Вход",
+        "User": "Пользователи",
+        "Orders": "Заказы",
+        "Printers_list": "Список принтеров",
+        "Printers_brand": "Марки принтеров",
+        "Cartridges": "Картриджи",
+        "ACTIONS": "Меню"
+    },
+    "Printers": {
+        "Id": "Id",
+        "Name": "Имя",
+        "Serial_number": "Серийный номер",
+        "Invenory_number": "Ивентарный номер",
+        "User_ID": "ID пользователя",
+        "Action": "Действие"
+    },
+    "Cartridges": {
+        "Id": "Id",
+        "Name": "Имя",
+        "All": "Всего",
+        "Ordered": "Заказано",
+        "Cartridges": "Картридж",
+        "Actions": "Действие",
+        "New_Cartridge": "Новый картридж"
+    },
+    "Other": {
+        "Not_Found_title": "Страница не найдена",
+        "Not_Found_text": "Ой. Такой старницы у нас нет. Где Вы ее взяли?"
+    }
 }

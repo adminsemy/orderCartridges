@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Not Found</h2>
-    <p>Woops! Looks like the page you requested cannot be found.</p>
+    <h2>{{ $t('Other.Not_Found_title') }}</h2>
+    <p>{{ $t('Other.Not_Found_text') }}</p>
   </div>
 </template>

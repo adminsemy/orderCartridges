@@ -17,16 +17,16 @@ import api from '../api/printers'
       return {
         headers: [
           {
-            text: 'id',
+            text: this.$t('Printers.Id'),
             align: 'start',
             sortable: true,
             value: 'id',
           },
-          { text: 'Name', value: 'name' },
-          { text: 'Serial number', value: 'serialNumber' },
-          { text: 'Invenory number', value: 'inventoryNumber' },
-          { text: 'User ID', value: 'uin' },
-          { text: 'Action', value: 'actions', sortable: false },
+          { text: this.$t('Printers.Name'), value: 'name' },
+          { text: this.$t('Printers.Serial_number'), value: 'serialNumber' },
+          { text: this.$t('Printers.Invenory_number'), value: 'inventoryNumber' },
+          { text: this.$t('Printers.User_ID'), value: 'uin' },
+          { text: this.$t('Printers.Action'), value: 'actions', sortable: false },
         ],
         printers: []
       }

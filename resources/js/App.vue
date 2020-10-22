@@ -58,11 +58,11 @@ export default {
     data: () => ({
       drawer: null,
       links: [
-        {title: 'Home', icon: 'mdi-home', url: {name: 'general'}, exact: true},
-        {title: 'Printers', icon: 'mdi-printer', url: {name: 'printers'}, exact: false},
-        {title: 'Admin', icon: 'mdi-account-star', url: {name: 'admin'}, exact: false},
-        {title: 'Login', icon: 'mdi-login', url: {name: 'home'}, exact: true},
-        {title: 'User', icon: 'mdi-account', url: {name: 'users.index'}, exact: true},
+        {title: 'General.Home', icon: 'mdi-home', url: {name: 'general'}, exact: true},
+        {title: 'General.Printers', icon: 'mdi-printer', url: {name: 'printers'}, exact: false},
+        {title: 'General.Admin', icon: 'mdi-account-star', url: {name: 'admin'}, exact: false},
+        {title: 'General.Login', icon: 'mdi-login', url: {name: 'home'}, exact: true},
+        {title: 'General.User', icon: 'mdi-account', url: {name: 'users.index'}, exact: true},
       ]
     })
 }

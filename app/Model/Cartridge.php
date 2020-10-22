@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Cartridge extends Model
 {
@@ -21,5 +22,16 @@ class Cartridge extends Model
         } else {
             return true;
         }
+    }
+    
+    /**
+     * Returns the relationship with the model Brands across 
+     * the model CartridgesOfPrinter
+     *
+     * @return HasMany
+     */
+    public function brandsOfCartridge(): HasMany
+    {
+        return $this->hasMany('App\Model\CartridgesOfPrinter', 'id_tovari');
     }
 }
