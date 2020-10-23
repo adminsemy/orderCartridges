@@ -252,14 +252,6 @@ export default {
   },
   created() {
     this.showAll();
-    api
-      .brands()
-      .then((response) => {
-        this.brands = response.data.data.sort();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   },
 };
 </script>

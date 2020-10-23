@@ -14,6 +14,13 @@
       :sort-by="'name'"
       class="elevation-1"
     >
+    <!-- Column 'cartridge' -->
+      <template v-slot:item.brands="{ item }">
+        <p class="px-3 pt-3" v-if="item.brands.length === 0">No data on brands</p>
+        <ul class="py-3" v-if="item.brands.length !== 0">
+          <li v-for="brand in item.brands" :key="brand.id">{{ brand.name }}</li>
+        </ul>
+      </template>
       <!-- Column action with action icons -->
       <template v-slot:item.actions="{ item }">
         <v-icon v-text="'mdi-pencil'" color="green" @click="formEditDialog(item)"></v-icon>
@@ -115,6 +122,7 @@ export default {
           value: "id",
         },
         { text: this.$t('Cartridges.Name'), value: "name" },
+        { text: this.$t('Cartridges.All'), value: "brands", sortable: false },
         { text: this.$t('Cartridges.All'), value: "all", sortable: false },
         { text: this.$t('Cartridges.Ordered'), value: "ordered", sortable: false },
         { text: this.$t('Cartridges.Actions'), value: "actions", sortable: false },

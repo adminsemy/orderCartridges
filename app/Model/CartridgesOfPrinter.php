@@ -10,7 +10,7 @@ class CartridgesOfPrinter extends Model
 
     public function printer()
     {
-        return $this->belongsTo('App\Model\PrinterName', 'id_orgtekhnika');
+        return $this->belongsTo('App\Model\PrinterNames', 'id_orgtekhnika');
     }
 
     public function cartridge(): \Illuminate\Database\Eloquent\Relations\BelongsTo

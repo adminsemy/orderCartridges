@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CartridgeResource;
+use App\Http\Resources\Admin\CartridgeResource;
 use App\Http\Resources\CartrigeNameResource;
 use App\Model\Cartridge;
 use Illuminate\Http\Request;
@@ -18,7 +18,9 @@ class CartridgesController extends Controller
      */
     public function index(): JsonResource
     {
-        $cartrides = Cartridge::all();
+        $cartrides = Cartridge::with(['brandsOfCartridge' => function ($query) {
+            $query->with('printer');
+        }])->get();
         return CartridgeResource::collection($cartrides);
     }
 
