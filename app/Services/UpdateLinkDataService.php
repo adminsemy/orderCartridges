@@ -5,9 +5,9 @@ namespace App\Services;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class for brand and them cartridges
+ * Class for work with model's link for inserting and deleting
  */
-class BrandCartridgesService
+class UpdateLinkDataService
 {        
     /**
      * @var object
@@ -31,15 +31,30 @@ class BrandCartridgesService
      * @var array
      */
     private $insert = [];
-
+    
+    /**
+     * Takes standart Laravel model for to work with its link
+     *
+     * @param  Model $model
+     * @param  string $nameLink
+     * @param  string $keyModel
+     * @return void
+     */
     public function __construct(Model $model, string $nameLink, string $keyModel)
     {
         $this->model = $model;
         $this->nameLink = $nameLink;
         $this->keyModel = $keyModel;
     }
-
-    public function handle(array $arryaRequest, string $keyRequest)
+    
+    /**
+     * Takes arrays objects from request for inserting and deleting
+     *
+     * @param  array $arryaRequest
+     * @param  string $keyRequest
+     * @return bool
+     */
+    public function handle(array $arryaRequest, string $keyRequest): bool
     {
         $arrayLink = $this->arrayLink();        
         $currentModelObjects = $this->id($arrayLink, $this->keyModel);
@@ -112,8 +127,15 @@ class BrandCartridgesService
         $nameLink = $this->nameLink;
         return $this->model->$nameLink->toArray();
     }
-
-    private function add(array $newObjects, string $keyRequest)
+    
+    /**
+     * Add objects by key
+     *
+     * @param  array $newObjects
+     * @param  string $keyRequest
+     * @return void
+     */
+    private function add(array $newObjects, string $keyRequest): void
     {
         $nameLink = $this->nameLink;
         $idModel = $this->model->id;
@@ -126,8 +148,14 @@ class BrandCartridgesService
         }
         $this->model->$nameLink()->createMany($insert);
     }
-
-    private function delete(array $deleteObjects)
+    
+    /**
+     * Delete objects by key
+     *
+     * @param  array $deleteObjects
+     * @return void
+     */
+    private function delete(array $deleteObjects): void
     {
         $nameLink = $this->nameLink;
         $this->model->$nameLink()->whereIn($this->keyModel, $deleteObjects)->delete();

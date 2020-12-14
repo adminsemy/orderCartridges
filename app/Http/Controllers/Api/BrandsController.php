@@ -8,6 +8,7 @@ use App\Http\Resources\Admin\PrinterNameResource;
 use App\Http\Resources\BrandNameResource;
 use App\Model\PrinterNames;
 use App\Services\BrandCartridgesService;
+use App\Services\UpdateLinkDataService;
 use DomainException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -50,9 +51,11 @@ class BrandsController extends Controller
 
     public function update(PrinterNames $brand, Request $request)
     {
-        if (BrandCartridgesService::save($request)) {
+        $service = new UpdateLinkDataService($brand, 'cartridgesOfPrinter', 'id_tovari');
+        try {
+            $service->handle($request->cartridges, 'id_orgtekhnika');
             return response()->json(['message' => 'Brand updated']);
-        } else {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Brand is not updated']);
         }
     }

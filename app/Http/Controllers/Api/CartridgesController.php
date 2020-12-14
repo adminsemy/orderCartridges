@@ -11,8 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Services\BrandCartridgesService;
-use Exception;
+use App\Services\UpdateLinkDataService;
 
 class CartridgesController extends Controller
 {    
@@ -47,12 +46,12 @@ class CartridgesController extends Controller
 
     public function update(Cartridge $cartridge, Request $request)
     {
-        $service = new BrandCartridgesService($cartridge, 'brandsOfCartridge', 'id_orgtekhnika');
+        $service = new UpdateLinkDataService($cartridge, 'brandsOfCartridge', 'id_orgtekhnika');
         try {
             $service->handle($request->brands, 'id_tovari');
-            return response()->json(['message' => 'Brand updated']);
+            return response()->json(['message' => 'Cartridge updated']);
         } catch (\Exception $e) {
-            return $e->getMessage();
+            return response()->json(['message' => 'Cartridge not updated']);
         }
     }
 
