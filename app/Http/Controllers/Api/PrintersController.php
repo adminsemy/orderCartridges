@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\PrinterResource;
+use App\Model\Cartridge;
 use App\Model\PrinterNames;
 use App\Model\Printers;
 use App\Services\PrinterService;
 use DomainException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PrintersController extends Controller
 {
@@ -63,11 +65,8 @@ class PrintersController extends Controller
 
     public function test()
     {
-        $collection = collect([1, 2, 3]);
-
-        $intersect = $collection->intersect([]);
-        
-        $intersect->all();
-        dd(array_unique($idCartridges));
+        $data = Cartridge::find(179);
+        var_dump($data->brandsOfCartridge);
+        die();
     }
 }

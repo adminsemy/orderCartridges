@@ -17,7 +17,7 @@ class CartridgeResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->marka,
-            'brands' => BrandNameResource::collection($this->brandsOfCartridge),
+            'brands' => BrandNameResource::collection($this->brandsOfCartridge->sortBy('printer.name')),
             'all' => $this->all,
             'ordered' => $this->zakaz,
         ];

@@ -3,12 +3,14 @@
     <!-- Button for modal form 'dialogForm' -->
     <v-row>
       <v-col>
-        <v-btn color="primary" @click="formNewDialog()">{{ $t('Cartridges.New_Cartridge') }}</v-btn>
+        <v-btn color="primary" @click="formNewDialog()">{{ $t('Cartridges.New_cartridge') }}</v-btn>
       </v-col>
     </v-row>
     <!-- Table brands -->
     <v-data-table
+      min-height="100%"
       :headers="headers"
+      fixed-header
       :items="cartridges"
       :items-per-page="25"
       :sort-by="'name'"
@@ -23,23 +25,33 @@
       </template>
       <!-- Column action with action icons -->
       <template v-slot:item.actions="{ item }">
-        <v-icon v-text="'mdi-pencil'" color="green" @click="formEditDialog(item)"></v-icon>
-        <v-icon v-text="'mdi-delete-forever'" color="red" @click="formDeleteDialog(item)"></v-icon>
+        <v-icon
+          v-text="'mdi-pencil'"
+          :title="$t('Cartridges.Edit_cartridge')"
+          color="green"
+          @click="formEditDialog(item)">
+        </v-icon>
+        <v-icon
+          v-text="'mdi-delete-forever'"
+          :title="$t('Cartridges.Delete_cartridge')"
+          color="red"
+          @click="formDeleteDialog(item)">
+        </v-icon>
       </template>
     </v-data-table>
     <!-- Modal form for delete selected brand -->
     <v-dialog v-model="dialogDelete" max-width="290">
       <v-card>
-        <v-card-title class="headline">Delete brand</v-card-title>
+        <v-card-title class="headline">{{ $t('Cartridges.Delete_title') }}</v-card-title>
 
-        <v-card-text>Are you sure that you want to delete this brand?</v-card-text>
+        <v-card-text>{{ $t('Cartridges.Delete_text') }}</v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn color="error" @click="deleteBrand()">Delete</v-btn>
+          <v-btn color="error" @click="deleteCartridge()">{{ $t('Cartridges.Delete') }}</v-btn>
 
-          <v-btn color="cancel" text @click="dialogDelete = false">Cancel</v-btn>
+          <v-btn color="cancel" text @click="dialogDelete = false">{{ $t('Cartridges.Cancel') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -54,7 +66,11 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field v-model="cartridge.name" label="Brands name" required></v-text-field>
+                <v-text-field
+                  v-model="cartridge.name"
+                  :label="cartridge.name === '' ? $t('Cartridges.New_name') : $t('Cartridges.Edit_name')"
+                  required>
+                </v-text-field>
               </v-col>
             </v-row>
             <!-- View brands for selected brand if it's not new brand -->
@@ -65,7 +81,7 @@
                   <v-select
                     v-model="selectBrand"
                     :items="nameBrands"
-                    label="Select cartridge"
+                    :label="$t('Cartridges.Select_brand')"
                     id="id"
                     item-text="name"
                     return-object="true"
@@ -101,9 +117,9 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn color="success" @click="saveCartridge()">Save</v-btn>
+          <v-btn color="success" @click="saveCartridge()">{{ $t('Cartridges.Save') }}</v-btn>
 
-          <v-btn color="cancel" text @click="dialogForm = false">Cancel</v-btn>
+          <v-btn color="cancel" text @click="dialogForm = false">{{ $t('Cartridges.Cancel') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -122,13 +138,13 @@ export default {
           value: "id",
         },
         { text: this.$t('Cartridges.Name'), value: "name" },
-        { text: this.$t('Cartridges.All'), value: "brands", sortable: false },
+        { text: this.$t('Cartridges.Brands'), value: "brands", sortable: false },
         { text: this.$t('Cartridges.All'), value: "all", sortable: false },
         { text: this.$t('Cartridges.Ordered'), value: "ordered", sortable: false },
         { text: this.$t('Cartridges.Actions'), value: "actions", sortable: false },
       ],
       cartridges: [],
-      titleForm: this.$t('Cartridges.New_Cartridge'),
+      titleForm: this.$t('Cartridges.New_cartridge'),
       nameBrands: [],
       selectBrand: '',
       cartridge: {
@@ -143,7 +159,7 @@ export default {
   methods: {
     /* Recieve 'id' and 'name' by cartridges. Address '/api/admin/cartridges' */
     selectBrands() {
-      apiBrand
+      apiBrands
         .name()
         .then((response) => {
           this.nameBrands = response.data.data;
@@ -165,7 +181,7 @@ export default {
     },
     /* Sets property 'brand' to the selected item from the brands and activity form */
     formEditDialog(item) {
-      this.titleForm = "Edit this brand";
+      this.titleForm = this.$t('Cartridges.Edit_cartridge');
       this.cartridge = JSON.parse(JSON.stringify(item));
       this.dialogForm = true;
       this.selectBrands();
@@ -179,7 +195,7 @@ export default {
     },
     /* Sets property 'brand' to empty and activity form */
     formNewDialog() {
-      this.titleForm = "New brand";
+      this.titleForm = this.$t('Cartridges.New_cartridge');
       this.cartridge = {
         id: "",
         name: "",
@@ -228,7 +244,7 @@ export default {
     },
     /* Edit or create new brand on server */
     saveCartridge() {
-      if (this.brand.id === "") {
+      if (this.cartridge.id === "") {
         this.addNewCartridge();
       } else {
         this.editCartridge();

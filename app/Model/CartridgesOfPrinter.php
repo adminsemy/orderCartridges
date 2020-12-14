@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class CartridgesOfPrinter extends Model
 {
+    protected $dateFormat;
     protected $table = 'web_cartridge';
+
+    protected $fillable = [
+        'id_orgtekhnika', 'id_tovari'
+    ];
 
     public function printer()
     {

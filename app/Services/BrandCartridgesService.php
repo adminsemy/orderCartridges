@@ -2,104 +2,135 @@
 
 namespace App\Services;
 
-use App\Model\CartridgesOfPrinter;
-use App\Model\PrinterCartridges\BrandCartridgesDelete;
-use App\Model\PrinterCartridges\BrandCartridgesInsert;
-use App\Model\PrinterNames;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class for brand and them cartridges
  */
 class BrandCartridgesService
-{
-    public static function save(PrinterNames $brand, Request $request): bool
+{        
+    /**
+     * @var object
+     */
+    private $model;    
+    /**
+     *
+     * @var string
+     */
+    private $nameLink = '';    
+    /**
+     *
+     * @var string
+     */
+    private $keyModel = '';    
+    /**
+     * @var array
+     */
+    private $delete = [];
+    /**
+     * @var array
+     */
+    private $insert = [];
+
+    public function __construct(Model $model, string $nameLink, string $keyModel)
     {
-        $isRemove = false; 
-        $isAdded = false;
+        $this->model = $model;
+        $this->nameLink = $nameLink;
+        $this->keyModel = $keyModel;
+    }
 
-        $currentBrandCartridges = CartridgesOfPrinter::select('id_tovari as id')
-                                    ->where('id_orgtekhnika', $brand->id)
-                                    ->get();
-        $currentBrandCartridges = self::idCartridge($currentBrandCartridges->toArray());
+    public function handle(array $arryaRequest, string $keyRequest)
+    {
+        $arrayLink = $this->arrayLink();        
+        $currentModelObjects = $this->id($arrayLink, $this->keyModel);
         
-        $idRequestCartriges = self::idCartridge($request->only('cartridges')['cartridges']);
+        $idRequestObjects = $this->id($arryaRequest);
         
-        //Array 'id' of cartridges to remove
-        $removalCartridges = self::forRemoving(collect($currentBrandCartridges), $idRequestCartriges);
-        
-        if ($removalCartridges !== []) {
-            $isRemove = BrandCartridgesDelete::cartridges((int) $brand->id, $removalCartridges);
-        }
-        
-        //Array 'id' of cartridges left after removal
-        $remainingCurrentCartridges =  self::withOutRemoval(collect($currentBrandCartridges), $removalCartridges);
-        $remainingRequestCartridges =  self::withOutRemoval(collect($idRequestCartriges), $removalCartridges);
-        
-        //Array 'id' of cartridges for add without removed
-        $addCartridges = self::withOutCurrent($remainingCurrentCartridges, $remainingRequestCartridges);
-        
-        if ($addCartridges !== []) {
-            $isAdded = BrandCartridgesInsert::cartridges((int) $brand->id, $addCartridges);
-        }
-
-        if ($isRemove || $isAdded) {
-            return true;
-        }
-        return false;
-        
+        $this->remove($currentModelObjects, $idRequestObjects);
+        $this->insert($currentModelObjects, $idRequestObjects, $keyRequest);
+        return true;
     }
     
     /**
      * Return an array of id of cartridge from a request
      *
-     * @param  array $cartridges
+     * @param  array $objects
      * @return array
      */
-    private static function idCartridge(array $cartridges): array
+    private function id(array $objects, string $key = 'id'): array
     {
-        $idCartridges = array_map(function ($catridge) {
-            return (int) $catridge['id'];
-        }, array_values($cartridges));
+        $id = array_map(function ($object) use ($key) {
+            return (int) $object[$key];
+        }, array_values($objects));
 
-        return array_unique($idCartridges);
+        $id = array_unique($id);
+
+        return $id;
     }
     
     /**
-     * Returns an array of cartridges that them delete
+     * Returns an array of cartridges for to delete
      *
-     * @param  Collection $currentCollection
+     * @param  array $current
      * @param  array $removal
-     * @return array
+     * @return void
      */
-    private static function forRemoving(Collection $currentCollection, array $removal): array
+    private function remove(array $current, array $removal): void
     {
-        $remainingCartridges = $currentCollection->intersect($removal);
-        return $currentCollection->diff($remainingCartridges)->toArray();
-    }
-    
-    /**
-     * Deleting removed cartridges from current array and return the result
-     *
-     * @param  Collection $currentCollection
-     * @param  array $removal
-     * @return array
-     */
-    private static function withOutRemoval(Collection $currentCollection, array $removal): array
-    {
-        return $currentCollection->diff($removal)->toArray();
+        $delete = array_diff($current, $removal);
+
+        if ([] === $delete) {
+            return;
+        }
+        $this->delete($delete);
     }
 
     /**
      * Deleting current cartridges from reguest array and return the result
      *
      * @param  array $current
-     * @param  array $fromRequest
+     * @param  array $insert
+     * @return void
+     */
+    private function insert(array $current, array $insert, string $keyRequest): void
+    {
+        $insert = array_diff($insert, $current);
+
+        if ([] === $insert) {
+            return;
+        }
+        $this->add($insert, $keyRequest);
+    }
+    
+    /**
+     * Return array collection of objects by link
+     *
      * @return array
      */
-    private static function withOutCurrent(array $current, array $fromRequest): array
+    private function arrayLink(): array
     {
-        return collect($fromRequest)->diff($current)->toArray();
+        $nameLink = $this->nameLink;
+        return $this->model->$nameLink->toArray();
     }
+
+    private function add(array $newObjects, string $keyRequest)
+    {
+        $nameLink = $this->nameLink;
+        $idModel = $this->model->id;
+        $insert = [];
+        foreach ($newObjects as $new) {
+            $insert[] = [
+                $this->keyModel => $new,
+                $keyRequest => $idModel
+            ];
+        }
+        $this->model->$nameLink()->createMany($insert);
+    }
+
+    private function delete(array $deleteObjects)
+    {
+        $nameLink = $this->nameLink;
+        $this->model->$nameLink()->whereIn($this->keyModel, $deleteObjects)->delete();
+    }
+
 }

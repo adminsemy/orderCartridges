@@ -32,7 +32,7 @@ Route::namespace('Api')->group(function() {
     Route::put('/admin/printer/new', 'PrintersController@store');
     Route::post('/admin/create/printer/{printer}', 'PrintersController@update');
     Route::delete('/admin/delete/printer/{printer}', 'PrintersController@delete');
-    Route::get('/admin/brands/name', [BrandsController::class, 'brands']);
+    Route::get('/admin/brands/name', [BrandsController::class, 'brandsName']);
     Route::get('/admin/brands', [BrandsController::class, 'index']);
     Route::post('/admin/brand/new', [BrandsController::class, 'store']);
     Route::put('/admin/brand/{brand}/edit', [BrandsController::class, 'update']);

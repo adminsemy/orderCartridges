@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\BrandsResource;
 use App\Http\Resources\Admin\PrinterNameResource;
+use App\Http\Resources\BrandNameResource;
 use App\Model\PrinterNames;
 use App\Services\BrandCartridgesService;
 use DomainException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class BrandsController extends Controller
 {
@@ -49,10 +50,10 @@ class BrandsController extends Controller
 
     public function update(PrinterNames $brand, Request $request)
     {
-        if (BrandCartridgesService::save($brand, $request)) {
-            return response()->json(['message' => 'Brand added']);
+        if (BrandCartridgesService::save($request)) {
+            return response()->json(['message' => 'Brand updated']);
         } else {
-            return response()->json(['message' => 'Brand is not added']);
+            return response()->json(['message' => 'Brand is not updated']);
         }
     }
     
@@ -70,5 +71,17 @@ class BrandsController extends Controller
         } catch (DomainException $e) {
             return response($e->getMessage(), $e->getCode());
         }
+    }
+
+    /**
+     * Returns collection brands with columns
+     * 'id'  and 'name' sorted by ask
+     *
+     * @return JsonResource
+     */
+    public function brandsName(): JsonResource
+    {
+        $sortBrandsName = PrinterNames::all()->sortBy('name');
+        return BrandNameResource::collection($sortBrandsName);
     }
 }
